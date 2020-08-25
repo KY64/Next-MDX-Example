@@ -1,11 +1,12 @@
-// Menggunakan module ReactJS
+// Import module
 import * as React from "react";
 import { GetStaticProps } from "next";
 import Link from "next/link";
 import fs from "fs";
-// Mengimpor konten file hello.mdx
+// Import component
 import { Footer, Grid, Card, Navbar, Featured } from "@/.";
 
+// Required props
 interface indexProps {
   posts: [
     {
@@ -50,16 +51,21 @@ const Index: React.FC<indexProps> = ({ posts }: indexProps) => {
   );
 };
 
+// Passing props to Functional Component
 export const getStaticProps: GetStaticProps = async () => {
+  // Read directory
   const filename: string[] = fs.readdirSync("posts");
   let posts: object[] = [];
+
+  // Iteration
   for (let i = 0; i < filename.length; i++) {
-    let stats = fs.statSync(`posts/${filename[i]}`)
-    console.log(stats)
+    // Get meta object
     let obj = await import(`posts/${filename[i]}`).then((mod) => mod.meta);
+    // Push object to array
     posts.push(obj);
   }
 
+  // Pass props to rendered page
   return {
     props: {
       posts,
